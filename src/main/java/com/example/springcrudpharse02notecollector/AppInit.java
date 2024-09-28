@@ -15,12 +15,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     }
 
     @Override
-    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        String tempDir = System.getProperty("java.io.tmpdir");
-        registration.setMultipartConfig(new MultipartConfigElement(tempDir));
-    }
-
-    @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[]{
                 WebAppConfig.class
@@ -30,5 +24,12 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+    //multipart form handle configuration
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        String tempDir = System.getProperty("java.io.tmpdir");
+        registration.setMultipartConfig(new MultipartConfigElement(tempDir));
     }
 }
