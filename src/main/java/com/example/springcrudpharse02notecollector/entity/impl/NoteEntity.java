@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "note")
-public class Note implements SuperEntity {
+public class NoteEntity implements SuperEntity {
     @Id
     private String noteId;
     private String noteTitle;
@@ -20,5 +20,5 @@ public class Note implements SuperEntity {
     private String priorityLevel;
     @ManyToOne
     @JoinColumn(name = "userId",nullable = false)
-    private User user;
+    private UserEntity user;
 }
