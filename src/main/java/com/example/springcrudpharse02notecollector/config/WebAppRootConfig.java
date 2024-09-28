@@ -33,13 +33,13 @@ public class WebAppRootConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-
+        //hibernate walat adala configuration thma methna tiyenne,
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.example.springcrudpharse02notecollector.entity");
+        factory.setJpaVendorAdapter(vendorAdapter); //methnin thami adpater eka kuda kiyla set kranne api aran tiyenne hibernate
+        factory.setPackagesToScan("com.example.springcrudpharse02notecollector.entity"); //methnin pennane entity kohed tiyenne kiyla
         factory.setDataSource(dataSource());
         return factory;
     }
