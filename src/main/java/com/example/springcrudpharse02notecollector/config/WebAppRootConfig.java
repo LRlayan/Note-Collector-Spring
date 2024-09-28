@@ -1,6 +1,7 @@
 package com.example.springcrudpharse02notecollector.config;
 
 import jakarta.persistence.EntityManagerFactory;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan(basePackages = "com.example.springcrudpharse02notecollector")
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.example.springcrudpharse02notecollector.dao")
 @EnableTransactionManagement
 public class WebAppRootConfig {
     @Bean
@@ -49,5 +50,10 @@ public class WebAppRootConfig {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory);
         return txManager;
+    }
+
+    @Bean
+    public ModelMapper modalMapper(){
+        return new ModelMapper();
     }
 }
