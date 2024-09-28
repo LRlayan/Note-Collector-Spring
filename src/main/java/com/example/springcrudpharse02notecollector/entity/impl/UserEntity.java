@@ -1,12 +1,10 @@
 package com.example.springcrudpharse02notecollector.entity.impl;
 
-import com.example.springcrudpharse02notecollector.dto.NoteDTO;
 import com.example.springcrudpharse02notecollector.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -14,7 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "user")
-public class User implements SuperEntity {
+public class UserEntity implements SuperEntity {
 
     @Id
     private String userId;
@@ -23,7 +21,8 @@ public class User implements SuperEntity {
     @Column(unique = true) //ekama value eka dennekta assign kranna bh mehem unama
     private String email;
     private String password;
+    @Column(columnDefinition = "LONGTEXT")
     private String profilePicture;
     @OneToMany(mappedBy = "user")
-    private List<Note> notes;
+    private List<NoteEntity> notes;
 }
