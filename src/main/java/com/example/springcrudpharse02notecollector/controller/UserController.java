@@ -7,21 +7,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
 
+    //multi part from data - meken ena request eka enne part kihipayaking. me ena hama req ekkama header ekk ha body ekk teenawa.meka tikk complex req ekk.
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO saveUser(
+            //req eka part widiyt thmai api genna ganne.
             @RequestPart("firstName") String firstName,
             @RequestPart("lastName") String lastName,
             @RequestPart("email") String email,
             @RequestPart("password") String password,
-            @RequestPart("profilePicture") String profilePicture
+            @RequestPart("profilePicture") MultipartFile profilePicture
     ){
         //Profile picture -----> Base64
-        var proPicBase64 = AppUtil.profilePicBase64(profilePicture);
+        String base64ProPic = "";
+
+        try{
+            byte[] bytesProPic = profilePicture.getBytes();
+            base64ProPic = AppUtil.profilePicBase64(bytesProPic);
+        }catch (Exception e){
+
+        }
 
         //UserId generate
         var userId = AppUtil.generateUserId();
@@ -34,7 +44,7 @@ public class UserController {
         userDTO.setLastName(lastName);
         userDTO.setEmail(email);
         userDTO.setPassword(password);
-        userDTO.setProfilePicture(profilePicture);
+        userDTO.setProfilePicture(base64ProPic);
 
         return userDTO;
     }
