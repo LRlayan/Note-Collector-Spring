@@ -7,11 +7,12 @@ import com.example.springcrudpharse02notecollector.util.Mapping;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceIMPL implements UserService{
+public class UserServiceIMPL implements UserService {
 
     @Autowired
     private UserDAO userDAO;
