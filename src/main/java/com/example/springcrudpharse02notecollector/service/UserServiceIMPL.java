@@ -37,6 +37,11 @@ public class UserServiceIMPL implements UserService{
     }
 
     @Override
+    public void updateUser(String id, UserDTO userDTO) {
+        mapping.toUserDTO(userDAO.save(mapping.toUserEntity(userDTO)));
+    }
+
+    @Override
     public List<UserDTO> getAllUsers() {
         List<UserEntity> allUser = userDAO.findAll();
         return mapping.userList(allUser);
