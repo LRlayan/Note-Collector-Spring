@@ -4,12 +4,13 @@ import com.example.springcrudpharse02notecollector.dao.UserDAO;
 import com.example.springcrudpharse02notecollector.dto.UserDTO;
 import com.example.springcrudpharse02notecollector.entity.impl.UserEntity;
 import com.example.springcrudpharse02notecollector.util.Mapping;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceIMPL implements UserService{
 
     @Autowired
@@ -24,17 +25,9 @@ public class UserServiceIMPL implements UserService{
     }
 
     @Override
-    public List<UserDTO> getAllUser() {
-        return null;
-    }
-
-    @Override
-    public boolean deleteUser(String id) {
-        return false;
-    }
-
-    @Override
-    public boolean updateUser(String id, UserDTO userDTO) {
-        return false;
+    public UserDTO getUser(String userId) {
+//        return mapping.toUserDTO(userDAO.getReferenceById(mapping.toUserDTO()));
+        UserEntity user = userDAO.getReferenceById(userId);
+        return mapping.toUserDTO(user);
     }
 }
