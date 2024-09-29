@@ -52,4 +52,9 @@ public class UserController {
     public UserDTO getSelectedUser(@PathVariable ("userId") String userId){
         return userService.getUser(userId);
     }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTO> getAllUsers(){
+        return userService.getAllUsers();
+    }
 }
