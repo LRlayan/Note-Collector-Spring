@@ -4,12 +4,11 @@ import com.example.springcrudpharse02notecollector.dto.UserDTO;
 import com.example.springcrudpharse02notecollector.service.UserService;
 import com.example.springcrudpharse02notecollector.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -47,5 +46,10 @@ public class UserController {
         userDTO.setPassword(password);
         userDTO.setProfilePicture(base64ProPic);
         return userService.saveUser(userDTO);
+    }
+
+    @GetMapping(value = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE )
+    public UserDTO getSelectedUser(@PathVariable ("userId") String userId){
+        return userService.getUser(userId);
     }
 }
