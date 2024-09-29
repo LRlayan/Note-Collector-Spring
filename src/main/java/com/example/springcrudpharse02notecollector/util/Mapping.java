@@ -1,6 +1,8 @@
 package com.example.springcrudpharse02notecollector.util;
 
+import com.example.springcrudpharse02notecollector.dto.NoteDTO;
 import com.example.springcrudpharse02notecollector.dto.UserDTO;
+import com.example.springcrudpharse02notecollector.entity.impl.NoteEntity;
 import com.example.springcrudpharse02notecollector.entity.impl.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -24,5 +26,17 @@ public class Mapping {
 
     public List<UserDTO> userList(List<UserEntity> userList){
         return modelMapper.map(userList,new TypeToken<List<UserDTO>>(){}.getType()); // type token ek dmme list ekk ganna ona nisa.nttn eka user kenai enne.
+    }
+
+    public NoteEntity toNoteEntity(NoteDTO noteDTO){
+        return modelMapper.map(noteDTO,NoteEntity.class);
+    }
+
+    public NoteDTO toNoteDTO(NoteEntity noteEntity){
+        return modelMapper.map(noteEntity,NoteDTO.class);
+    }
+
+    public List<NoteDTO> noteList(List<NoteEntity> noteList){
+        return modelMapper.map(noteList, new TypeToken<List<NoteDTO>>(){}.getType());
     }
 }
