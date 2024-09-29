@@ -57,4 +57,11 @@ public class UserController {
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "/{userId}")
+    public void deleteUser(@PathVariable ("userId") String userId){
+        userService.deleteUser(userId);
+    }
+
 }
