@@ -30,4 +30,10 @@ public class UserServiceIMPL implements UserService{
         UserEntity user = userDAO.getReferenceById(userId);
         return mapping.toUserDTO(user);
     }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<UserEntity> allUser = userDAO.findAll();
+        return mapping.userList(allUser);
+    }
 }
