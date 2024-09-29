@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class UserController {
         var userDTO = new UserDTO();
         userDTO.setUserId(userId);
         userDTO.setFirstName(firstName);
-        userDTO.setFirstName(lastName);
+        userDTO.setLastName(lastName);
         userDTO.setEmail(email);
         userDTO.setPassword(password);
         userDTO.setProfilePicture(base64ProPic);
@@ -64,4 +65,22 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/{userId}")
+    public void updateUser(@PathVariable ("userId") String userId,
+                           @RequestPart("firstName") String firstName,
+                           @RequestPart("lastName") String lastName,
+                           @RequestPart("email") String email,
+                           @RequestPart("password") String password,
+                           @RequestPart("profilePicture") MultipartFile profilePicture) throws IOException {
+
+        var userDTO = new UserDTO();
+        userDTO.setUserId(userId);
+        userDTO.setFirstName(firstName);
+        userDTO.setLastName(lastName);
+        userDTO.setEmail(email);
+        userDTO.setPassword(password);
+        userDTO.setProfilePicture(AppUtil.profilePicBase64(profilePicture.getBytes()));
+        userService.updateUser(userId,userDTO);
+    }
 }
