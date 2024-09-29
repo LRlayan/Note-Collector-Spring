@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -18,21 +19,20 @@ public class UserController {
     UserService userService;
 
     //multi part from data - meken ena request eka enne part kihipayaking. me ena hama req ekkama header ekk ha body ekk teenawa.meka tikk complex req ekk.
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO saveUser(
             //req eka part widiyt thmai api genna ganne.
             @RequestPart("firstName") String firstName,
             @RequestPart("lastName") String lastName,
             @RequestPart("email") String email,
             @RequestPart("password") String password,
-            @RequestPart("profilePicture") MultipartFile profilePicture
-    ){
+            @RequestPart("profilePicture") MultipartFile profilePicture) {
         //Profile picture -----> Base64
         String base64ProPic = "";
-        try{
+        try {
             byte[] bytesProPic = profilePicture.getBytes();
             base64ProPic = AppUtil.profilePicBase64(bytesProPic);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         //UserId generate
@@ -49,31 +49,25 @@ public class UserController {
         return userService.saveUser(userDTO);
     }
 
-    @GetMapping(value = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE )
-    public UserDTO getSelectedUser(@PathVariable ("userId") String userId){
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getSelectedUser(@PathVariable("userId") String userId) {
         return userService.getUser(userId);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{userId}")
-    public void deleteUser(@PathVariable ("userId") String userId){
+    public void deleteUser(@PathVariable("userId") String userId) {
         userService.deleteUser(userId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(value = "/{userId}")
-    public void updateUser(@PathVariable ("userId") String userId,
-                           @RequestPart("firstName") String firstName,
-                           @RequestPart("lastName") String lastName,
-                           @RequestPart("email") String email,
-                           @RequestPart("password") String password,
-                           @RequestPart("profilePicture") MultipartFile profilePicture) throws IOException {
-
+    public void updateUser(@PathVariable("userId") String userId, @RequestPart("firstName") String firstName, @RequestPart("lastName") String lastName, @RequestPart("email") String email, @RequestPart("password") String password, @RequestPart("profilePicture") MultipartFile profilePicture) throws IOException {
         var userDTO = new UserDTO();
         userDTO.setUserId(userId);
         userDTO.setFirstName(firstName);
@@ -81,6 +75,6 @@ public class UserController {
         userDTO.setEmail(email);
         userDTO.setPassword(password);
         userDTO.setProfilePicture(AppUtil.profilePicBase64(profilePicture.getBytes()));
-        userService.updateUser(userId,userDTO);
+        userService.updateUser(userId, userDTO);
     }
 }
