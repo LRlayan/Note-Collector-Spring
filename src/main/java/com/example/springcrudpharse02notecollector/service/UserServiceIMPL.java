@@ -32,6 +32,11 @@ public class UserServiceIMPL implements UserService{
     }
 
     @Override
+    public void deleteUser(String userId) {
+        userDAO.deleteById(userId);
+    }
+
+    @Override
     public List<UserDTO> getAllUsers() {
         List<UserEntity> allUser = userDAO.findAll();
         return mapping.userList(allUser);
