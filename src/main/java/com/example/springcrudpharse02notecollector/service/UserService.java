@@ -1,6 +1,6 @@
 package com.example.springcrudpharse02notecollector.service;
 
-import com.example.springcrudpharse02notecollector.dto.UserDTO;
+import com.example.springcrudpharse02notecollector.dto.impl.UserDTO;
 import com.example.springcrudpharse02notecollector.dto.UserStatus;
 
 import java.util.List;
