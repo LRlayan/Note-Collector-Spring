@@ -1,13 +1,17 @@
 package com.example.springcrudpharse02notecollector.controller;
 
-import com.example.springcrudpharse02notecollector.dto.NoteDTO;
+import com.example.springcrudpharse02notecollector.dto.impl.NoteDTO;
+import com.example.springcrudpharse02notecollector.exception.DataPersistException;
 import com.example.springcrudpharse02notecollector.service.NoteService;
 import com.example.springcrudpharse02notecollector.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.regex.Pattern;
+
 @RestController
 @RequestMapping("api/v1/notes")
 //meka api ekak / version eka - version eka maruweddi methna version eka thma maru karanne eka standard ekk / class map path
@@ -23,26 +27,22 @@ public class NoteController {
 //        return noteService.saveNote(noteDTO);
 //    }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public NoteDTO saveNote(
-            @RequestPart ("time") String time,
-            @RequestPart ("desc") String desc,
-            @RequestPart ("currentDate") String currentDate,
-            @RequestPart ("priorityLevel") String priorityLevel,
-            @RequestPart ("username") String username
-    ){
-        var noteDTO = new NoteDTO();
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> saveNote(@RequestBody NoteDTO noteDTO){
         noteDTO.setNoteId(AppUtil.generateNoteId());
-        noteDTO.setTime(time);
-        noteDTO.setDesc(desc);
-        noteDTO.setCurrentDate(currentDate);
-        noteDTO.setPriorityLevel(priorityLevel);
-        noteDTO.setUsername(username);
-        return noteService.saveNote(noteDTO);
+        try{
+            noteService.saveNote(noteDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (DataPersistException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    @GetMapping //mewa end point
-    @GetMapping(value = "/{noteId}")
+    @GetMapping(value = "/{noteId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public NoteDTO getSelectedNote(@PathVariable ("noteId") String noteId){
         return null;
     }
