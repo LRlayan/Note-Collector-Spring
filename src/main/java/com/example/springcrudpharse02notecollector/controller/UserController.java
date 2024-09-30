@@ -7,16 +7,15 @@ import com.example.springcrudpharse02notecollector.exception.DataPersistExceptio
 import com.example.springcrudpharse02notecollector.exception.UserNotFoundException;
 import com.example.springcrudpharse02notecollector.service.UserService;
 import com.example.springcrudpharse02notecollector.util.AppUtil;
+import com.example.springcrudpharse02notecollector.util.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -62,10 +61,8 @@ public class UserController {
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserStatus getSelectedUser(@PathVariable("userId") String userId) {
-        String regexUserId = "^USER-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
-        Pattern regexPattern = Pattern.compile(regexUserId);
-        var matcherUserId = regexPattern.matcher(userId);
-        if (!matcherUserId.matches()){
+
+        if (!Regex.userIdValidate(userId).matches()){
             //meke response eka thawa application ekakata ynawa kiyla hithamu.e nisa apita eka http status code walin handle krnna bh.e nisa apita pluwn custom status code ekk hadala eka return kranna.
             return new SelectedUserAndNoteErrorStatus(1,"User ID not valid!");
         }
@@ -80,11 +77,8 @@ public class UserController {
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId) {
-        String regexUserId = "^USER-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
-        Pattern regexPattern = Pattern.compile(regexUserId);
-        var matcherUserId = regexPattern.matcher(userId);
         try {
-            if (!matcherUserId.matches()){
+            if (!Regex.userIdValidate(userId).matches()){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             userService.deleteUser(userId);
