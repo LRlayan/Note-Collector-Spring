@@ -1,7 +1,7 @@
 package com.example.springcrudpharse02notecollector.util;
 
-import com.example.springcrudpharse02notecollector.dto.NoteDTO;
-import com.example.springcrudpharse02notecollector.dto.UserDTO;
+import com.example.springcrudpharse02notecollector.dto.impl.NoteDTO;
+import com.example.springcrudpharse02notecollector.dto.impl.UserDTO;
 import com.example.springcrudpharse02notecollector.entity.impl.NoteEntity;
 import com.example.springcrudpharse02notecollector.entity.impl.UserEntity;
 import org.modelmapper.ModelMapper;
