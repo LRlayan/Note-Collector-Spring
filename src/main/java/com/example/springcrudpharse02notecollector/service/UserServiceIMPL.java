@@ -1,7 +1,9 @@
 package com.example.springcrudpharse02notecollector.service;
 
+import com.example.springcrudpharse02notecollector.customStatusCode.selectedUserErrorStatus;
 import com.example.springcrudpharse02notecollector.dao.UserDAO;
 import com.example.springcrudpharse02notecollector.dto.UserDTO;
+import com.example.springcrudpharse02notecollector.dto.UserStatus;
 import com.example.springcrudpharse02notecollector.entity.impl.UserEntity;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
 import com.example.springcrudpharse02notecollector.util.Mapping;
@@ -37,9 +39,12 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public UserDTO getUser(String userId) {
+    public UserStatus getUser(String userId) {
 //        return mapping.toUserDTO(userDAO.getReferenceById(mapping.toUserDTO()));
         UserEntity user = userDAO.getReferenceById(userId);
+        if (user == null){
+            return new selectedUserErrorStatus(2,"User with ID "+userId+" not found");
+        }
         return mapping.toUserDTO(user);
     }
 
