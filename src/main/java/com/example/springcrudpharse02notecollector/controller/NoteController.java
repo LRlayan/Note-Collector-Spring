@@ -1,5 +1,7 @@
 package com.example.springcrudpharse02notecollector.controller;
 
+import com.example.springcrudpharse02notecollector.customStatusCode.SelectedUserAndNoteErrorStatus;
+import com.example.springcrudpharse02notecollector.dto.NoteStatus;
 import com.example.springcrudpharse02notecollector.dto.impl.NoteDTO;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
 import com.example.springcrudpharse02notecollector.service.NoteService;
@@ -43,8 +45,14 @@ public class NoteController {
 
 //    @GetMapping //mewa end point
     @GetMapping(value = "/{noteId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public NoteDTO getSelectedNote(@PathVariable ("noteId") String noteId){
-        return null;
+    public NoteStatus getSelectedNote(@PathVariable ("noteId") String noteId){
+        String regexUserId = "^NOTE-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
+        Pattern regexPattern = Pattern.compile(regexUserId);
+        var matcherUserId = regexPattern.matcher(noteId);
+        if (!matcherUserId.matches()){
+            return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
+        }
+        return noteService.getNote(noteId);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)//mewa end point
