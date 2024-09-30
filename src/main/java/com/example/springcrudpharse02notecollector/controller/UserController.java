@@ -96,7 +96,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+   // @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(value = "/{userId}")
     public void updateUser(@PathVariable("userId") String userId, @RequestPart("firstName") String firstName, @RequestPart("lastName") String lastName, @RequestPart("email") String email, @RequestPart("password") String password, @RequestPart("profilePicture") MultipartFile profilePicture) throws IOException {
         var userDTO = new UserDTO();
