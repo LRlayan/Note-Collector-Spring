@@ -1,6 +1,8 @@
 package com.example.springcrudpharse02notecollector.service;
 
+import com.example.springcrudpharse02notecollector.customStatusCode.SelectedUserAndNoteErrorStatus;
 import com.example.springcrudpharse02notecollector.dao.NoteDAO;
+import com.example.springcrudpharse02notecollector.dto.NoteStatus;
 import com.example.springcrudpharse02notecollector.dto.impl.NoteDTO;
 import com.example.springcrudpharse02notecollector.entity.impl.NoteEntity;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
@@ -41,5 +43,15 @@ public class NoteServiceIMPL implements NoteService{
     @Override
     public boolean updateNote(String id, NoteDTO noteDTO) {
         return false;
+    }
+
+    @Override
+    public NoteStatus getNote(String noteId) {
+        if(noteDAO.existsById(noteId)){
+            var selectedUser = noteDAO.getReferenceById(noteId);
+            return mapping.toNoteDTO(selectedUser);
+        }else {
+            return new SelectedUserAndNoteErrorStatus(2,"Selected note not found");
+        }
     }
 }
