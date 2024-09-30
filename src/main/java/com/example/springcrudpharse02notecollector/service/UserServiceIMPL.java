@@ -40,12 +40,13 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public UserStatus getUser(String userId) {
-//        return mapping.toUserDTO(userDAO.getReferenceById(mapping.toUserDTO()));
-        UserEntity user = userDAO.getReferenceById(userId);
-        if (user == null){
+        //        return mapping.toUserDTO(userDAO.getReferenceById(mapping.toUserDTO()));
+        if (userDAO.existsById(userId)){
+            UserEntity selectedUser = userDAO.getReferenceById(userId);
+            return mapping.toUserDTO(selectedUser);
+        }else {
             return new selectedUserErrorStatus(2,"User with ID "+userId+" not found");
         }
-        return mapping.toUserDTO(user);
     }
 
     @Override
