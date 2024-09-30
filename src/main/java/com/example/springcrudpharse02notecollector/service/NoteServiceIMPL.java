@@ -6,12 +6,15 @@ import com.example.springcrudpharse02notecollector.dto.NoteStatus;
 import com.example.springcrudpharse02notecollector.dto.impl.NoteDTO;
 import com.example.springcrudpharse02notecollector.entity.impl.NoteEntity;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
+import com.example.springcrudpharse02notecollector.exception.NoteNotFoundException;
 import com.example.springcrudpharse02notecollector.util.Mapping;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 //meka service vlasse walata wisheshyen hadapu ekka.internally service walata galapena function meke implement karala tiyenawa.
 @Service
 @Transactional
@@ -36,8 +39,13 @@ public class NoteServiceIMPL implements NoteService{
     }
 
     @Override
-    public boolean deleteNote(String id) {
-        return false;
+    public void deleteNote(String noteId) {
+        Optional<NoteEntity> selectedNote = noteDAO.findById(noteId);
+        if (!selectedNote.isPresent()){
+            throw new NoteNotFoundException("Note Id with" + noteId + "Not found");
+        }else {
+            noteDAO.deleteById(noteId);
+        }
     }
 
     @Override
