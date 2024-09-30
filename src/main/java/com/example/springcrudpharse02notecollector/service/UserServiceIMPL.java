@@ -2,10 +2,11 @@ package com.example.springcrudpharse02notecollector.service;
 
 import com.example.springcrudpharse02notecollector.customStatusCode.selectedUserErrorStatus;
 import com.example.springcrudpharse02notecollector.dao.UserDAO;
-import com.example.springcrudpharse02notecollector.dto.UserDTO;
+import com.example.springcrudpharse02notecollector.dto.impl.UserDTO;
 import com.example.springcrudpharse02notecollector.dto.UserStatus;
 import com.example.springcrudpharse02notecollector.entity.impl.UserEntity;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
+import com.example.springcrudpharse02notecollector.exception.UserNotFoundException;
 import com.example.springcrudpharse02notecollector.util.Mapping;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class UserServiceIMPL implements UserService {
     @Override
     public void saveUser(UserDTO userDTO) {
         // mapping.toUserDTO(userDAO.save(mapping.toUserEntity(userDTO)));
-        UserEntity saveUser = mapping.toUserEntity(userDTO);
+        UserEntity saveUser = userDAO.save(mapping.toUserEntity(userDTO));
         if (saveUser == null){
             throw new DataPersistException("User Not Saved.Please Try Again.");
         }
@@ -51,7 +52,12 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public void deleteUser(String userId) {
-        userDAO.deleteById(userId);
+        Optional<UserEntity> selectedUser = userDAO.findById(userId);
+        if (!selectedUser.isPresent()){
+            throw new UserNotFoundException("User with id " + userId + "not found");
+        }else {
+            userDAO.deleteById(userId);
+        }
     }
 
     @Override
