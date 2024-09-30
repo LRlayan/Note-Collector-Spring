@@ -7,13 +7,13 @@ import com.example.springcrudpharse02notecollector.exception.DataPersistExceptio
 import com.example.springcrudpharse02notecollector.exception.UserNotFoundException;
 import com.example.springcrudpharse02notecollector.service.NoteService;
 import com.example.springcrudpharse02notecollector.util.AppUtil;
+import com.example.springcrudpharse02notecollector.util.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("api/v1/notes")
@@ -23,13 +23,6 @@ public class NoteController {
     //controller eke wade req res handle karana eka ha client ekka interact wena eka.
     @Autowired
     NoteService noteService;
-
-//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)//produce karanawa kiyanne server eka patte idan client(deserialize) consume kiyanne anit patta(serialize)
-//    public NoteDTO saveNote(@RequestBody NoteDTO noteDTO){//RequestBody eka ganna pluwan me annotation eken //mewa end point
-//        noteDTO.setNoteId(AppUtil.generateNoteId());
-//        return noteService.saveNote(noteDTO);
-//    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveNote(@RequestBody NoteDTO noteDTO){
         noteDTO.setNoteId(AppUtil.generateNoteId());
@@ -47,10 +40,7 @@ public class NoteController {
 //    @GetMapping //mewa end point
     @GetMapping(value = "/{noteId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public NoteStatus getSelectedNote(@PathVariable ("noteId") String noteId){
-        String regexUserId = "^NOTE-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
-        Pattern regexPattern = Pattern.compile(regexUserId);
-        var matcherNoteId = regexPattern.matcher(noteId);
-        if (!matcherNoteId.matches()){
+        if (!Regex.noteIdValidate(noteId).matches()){
             return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
         }
         return noteService.getNote(noteId);
@@ -63,11 +53,8 @@ public class NoteController {
 
     @DeleteMapping(value = "/{noteId}")//mewa end point
     public ResponseEntity<Void> deleteNote(@PathVariable ("noteId") String noteId){
-        String regexUserId = "^NOTE-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
-        Pattern regexPattern = Pattern.compile(regexUserId);
-        var matcherNoteId = regexPattern.matcher(noteId);
         try{
-            if (!matcherNoteId.matches()){
+            if (!Regex.noteIdValidate(noteId).matches()){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             noteService.deleteNote(noteId);
