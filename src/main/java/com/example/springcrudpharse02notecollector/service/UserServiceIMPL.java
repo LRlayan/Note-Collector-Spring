@@ -1,6 +1,6 @@
 package com.example.springcrudpharse02notecollector.service;
 
-import com.example.springcrudpharse02notecollector.customStatusCode.selectedUserErrorStatus;
+import com.example.springcrudpharse02notecollector.customStatusCode.SelectedUserAndNoteErrorStatus;
 import com.example.springcrudpharse02notecollector.dao.UserDAO;
 import com.example.springcrudpharse02notecollector.dto.impl.UserDTO;
 import com.example.springcrudpharse02notecollector.dto.UserStatus;
@@ -46,7 +46,7 @@ public class UserServiceIMPL implements UserService {
             UserEntity selectedUser = userDAO.getReferenceById(userId);
             return mapping.toUserDTO(selectedUser);
         }else {
-            return new selectedUserErrorStatus(2,"User with ID "+userId+" not found");
+            return new SelectedUserAndNoteErrorStatus(2,"User with ID "+userId+" not found");
         }
     }
 
