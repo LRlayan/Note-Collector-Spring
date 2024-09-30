@@ -4,6 +4,7 @@ import com.example.springcrudpharse02notecollector.customStatusCode.SelectedUser
 import com.example.springcrudpharse02notecollector.dto.NoteStatus;
 import com.example.springcrudpharse02notecollector.dto.impl.NoteDTO;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
+import com.example.springcrudpharse02notecollector.exception.UserNotFoundException;
 import com.example.springcrudpharse02notecollector.service.NoteService;
 import com.example.springcrudpharse02notecollector.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class NoteController {
     public NoteStatus getSelectedNote(@PathVariable ("noteId") String noteId){
         String regexUserId = "^NOTE-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
         Pattern regexPattern = Pattern.compile(regexUserId);
-        var matcherUserId = regexPattern.matcher(noteId);
-        if (!matcherUserId.matches()){
+        var matcherNoteId = regexPattern.matcher(noteId);
+        if (!matcherNoteId.matches()){
             return new SelectedUserAndNoteErrorStatus(1,"Note ID is not valid");
         }
         return noteService.getNote(noteId);
@@ -60,8 +61,22 @@ public class NoteController {
         return noteService.getAllNote();
     }
 
-    @DeleteMapping//mewa end point
-    public void deleteNote(String noteId,NoteDTO noteDTO){
-
+    @DeleteMapping(value = "/{noteId}")//mewa end point
+    public ResponseEntity<Void> deleteNote(@PathVariable ("noteId") String noteId){
+        String regexUserId = "^NOTE-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
+        Pattern regexPattern = Pattern.compile(regexUserId);
+        var matcherNoteId = regexPattern.matcher(noteId);
+        try{
+            if (!matcherNoteId.matches()){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            noteService.deleteNote(noteId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
