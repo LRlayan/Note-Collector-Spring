@@ -8,6 +8,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @ComponentScan(basePackages = "com.example.springcrudpharse02notecollector")
 @EnableWebMvc
-@MultipartConfig //multipart form configuration meke enble krla tiyenne kiyla meken kiyanna pluwn // me annotation eka meke damme adala data eka enne controller class ekata ethkot e data eka handle wenne controller class eken.e nisa eka controller class ekata damme.mulitipart kiynne controller class ekata adala configuration ekak.
+@MultipartConfig(
+                 fileSizeThreshold = 1024 * 1024 * 2, //pro pic eka server ekt upload karama meka procces karanna one.2mp walata wada aduinm primery memoery eke proces weno.ekata wada wadinm scondory memory ekata bara deno.me value damme nttn mewa default tiyenne unlimited
+                 maxFileSize = 1024 * 1024 * 3,//me app ekata updalod kranna pluwn file size eka kiyada,
+                 maxRequestSize = 1024 * 1024 * 10
+) //multipart form configuration meke enble krla tiyenne kiyla meken kiyanna pluwn // me annotation eka meke damme adala data eka enne controller class ekata ethkot e data eka handle wenne controller class eken.e nisa eka controller class ekata damme.mulitipart kiynne controller class ekata adala configuration ekak.
 public class WebAppConfig {
 }
