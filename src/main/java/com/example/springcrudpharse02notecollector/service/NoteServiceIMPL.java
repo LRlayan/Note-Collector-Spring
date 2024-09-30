@@ -35,7 +35,8 @@ public class NoteServiceIMPL implements NoteService{
 
     @Override
     public List<NoteDTO> getAllNote() {
-        return null;
+        List<NoteEntity> getAllNotes = noteDAO.findAll();
+        return mapping.noteList(getAllNotes);
     }
 
     @Override
