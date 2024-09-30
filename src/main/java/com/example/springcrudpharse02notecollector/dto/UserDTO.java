@@ -8,7 +8,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UserDTO implements SuperDTO {
+public class UserDTO implements SuperDTO,UserStatus {
     String userId;
     String firstName;
     String lastName;
