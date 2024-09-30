@@ -17,15 +17,33 @@ public class NoteController {
     @Autowired
     NoteService noteService;
 
+//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)//produce karanawa kiyanne server eka patte idan client(deserialize) consume kiyanne anit patta(serialize)
+//    public NoteDTO saveNote(@RequestBody NoteDTO noteDTO){//RequestBody eka ganna pluwan me annotation eken //mewa end point
+//        noteDTO.setNoteId(AppUtil.generateNoteId());
+//        return noteService.saveNote(noteDTO);
+//    }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)//produce karanawa kiyanne server eka patte idan client(deserialize) consume kiyanne anit patta(serialize)
-    public NoteDTO saveNote(@RequestBody NoteDTO noteDTO){//RequestBody eka ganna pluwan me annotation eken //mewa end point
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public NoteDTO saveNote(
+            @RequestPart ("time") String time,
+            @RequestPart ("desc") String desc,
+            @RequestPart ("currentDate") String currentDate,
+            @RequestPart ("priorityLevel") String priorityLevel,
+            @RequestPart ("username") String username
+    ){
+        var noteDTO = new NoteDTO();
         noteDTO.setNoteId(AppUtil.generateNoteId());
+        noteDTO.setTime(time);
+        noteDTO.setDesc(desc);
+        noteDTO.setCurrentDate(currentDate);
+        noteDTO.setPriorityLevel(priorityLevel);
+        noteDTO.setUsername(username);
         return noteService.saveNote(noteDTO);
     }
 
 //    @GetMapping //mewa end point
-    public NoteDTO getSelectedNote(){
+    @GetMapping(value = "/{noteId}")
+    public NoteDTO getSelectedNote(@PathVariable ("noteId") String noteId){
         return null;
     }
 
