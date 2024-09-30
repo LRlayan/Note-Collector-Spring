@@ -1,6 +1,8 @@
 package com.example.springcrudpharse02notecollector.controller;
 
+import com.example.springcrudpharse02notecollector.customStatusCode.selectedUserErrorStatus;
 import com.example.springcrudpharse02notecollector.dto.UserDTO;
+import com.example.springcrudpharse02notecollector.dto.UserStatus;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
 import com.example.springcrudpharse02notecollector.service.UserService;
 import com.example.springcrudpharse02notecollector.util.AppUtil;
@@ -57,8 +59,13 @@ public class UserController {
     }
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getSelectedUser(@PathVariable("userId") String userId) {
+    public UserStatus getSelectedUser(@PathVariable("userId") String userId) {
+        if (userId.isEmpty() || userId == null){
+            //meke response eka thawa application ekakata ynawa kiyla hithamu.e nisa apita eka http status code walin handle krnna bh.e nisa apita pluwn custom status code ekk hadala eka return kranna.
+            return new selectedUserErrorStatus(1,"User ID not valid!");
+        }
         return userService.getUser(userId);
+
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
