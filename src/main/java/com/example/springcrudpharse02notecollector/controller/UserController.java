@@ -1,6 +1,6 @@
 package com.example.springcrudpharse02notecollector.controller;
 
-import com.example.springcrudpharse02notecollector.customStatusCode.selectedUserErrorStatus;
+import com.example.springcrudpharse02notecollector.customStatusCode.SelectedUserAndNoteErrorStatus;
 import com.example.springcrudpharse02notecollector.dto.impl.UserDTO;
 import com.example.springcrudpharse02notecollector.dto.UserStatus;
 import com.example.springcrudpharse02notecollector.exception.DataPersistException;
@@ -67,7 +67,7 @@ public class UserController {
         var matcherUserId = regexPattern.matcher(userId);
         if (!matcherUserId.matches()){
             //meke response eka thawa application ekakata ynawa kiyla hithamu.e nisa apita eka http status code walin handle krnna bh.e nisa apita pluwn custom status code ekk hadala eka return kranna.
-            return new selectedUserErrorStatus(1,"User ID not valid!");
+            return new SelectedUserAndNoteErrorStatus(1,"User ID not valid!");
         }
         return userService.getUser(userId);
     }
